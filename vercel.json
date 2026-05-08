@@ -1,28 +1,14 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
-  ],
   "functions": {
-    "server.js": {
+    "api/index.js": {
       "maxDuration": 60
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/analyze",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
+      "source": "/analyze",
+      "destination": "/api/index"
     }
   ]
 }
