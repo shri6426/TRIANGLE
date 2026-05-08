@@ -136,13 +136,25 @@ fileInput.addEventListener('change', (e) => {
     sendButton.style.opacity = '1';
     sendButton.style.pointerEvents = 'auto';
     sendButton.textContent = 'Synthesize Prompts';
+  } else {
+    selectedFile = null;
+    const hasIntent = document.getElementById('user-intent-input').value.trim().length > 0;
+    if (!hasIntent) {
+      sendButton.style.opacity = '0.5';
+      sendButton.style.pointerEvents = 'none';
+    }
   }
 });
 
 document.getElementById('user-intent-input').addEventListener('input', (e) => {
-  if (e.target.value.trim().length > 0) {
+  const hasIntent = e.target.value.trim().length > 0;
+  if (hasIntent || selectedFile) {
     sendButton.style.opacity = '1';
     sendButton.style.pointerEvents = 'auto';
+    sendButton.textContent = 'Synthesize Prompts';
+  } else {
+    sendButton.style.opacity = '0.5';
+    sendButton.style.pointerEvents = 'none';
     sendButton.textContent = 'Synthesize Prompts';
   }
 });
@@ -156,6 +168,11 @@ sendButton.addEventListener('click', async () => {
   sendButton.style.pointerEvents = 'none';
   sendButton.textContent = 'Synthesizing...';
   document.getElementById('upload-title').textContent = selectedFile ? "Uploading..." : "Processing Intent...";
+  
+  const progressLabel = document.querySelector('.demo-progress-label');
+  if (progressLabel) {
+    progressLabel.innerHTML = `<div class="progress-dot"></div> ${selectedFile ? 'Analyzing Sample Frame' : 'Architecting Vision'}`;
+  }
 
   const steps = ['scene', 'lighting', 'color', 'camera', 'prompt'];
   steps.forEach(step => {
