@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIANGLE — Creative Intelligence Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,2 18,17 2,17" stroke="currentColor" stroke-width="1.2" fill="none"/>
+      <polygon points="10,7 14.5,15 5.5,15" fill="currentColor" opacity="0.4"/>
+    </svg>
+    TRIANGLE
+  </div>
+  <div class="nav-links">
+    <a href="#demo">Product</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#proof">Studio</a>
+    <a href="#pricing" class="nav-cta">Start Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <canvas id="bg-canvas"></canvas>
+    <div class="hero-grain"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Creative Intelligence Engine — Now in Beta
+    </div>
+    <h1 class="hero-title">
+      EVERY FRAME<br>
+      <span class="line2">HIDES A PROMPT</span>
+    </h1>
+    <p class="hero-sub">
+      Upload any image or video. TRIANGLE reverse-engineers<br>
+      <em>cinematic intelligence</em> — generating production-grade prompts<br>
+      for every AI model on the planet.
+    </p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="8,1 15,14 1,14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        Analyze Your First Frame
+      </a>
+      <a href="#features" class="btn-secondary">
+        See How It Works →
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-num">14M+</div>
+      <div class="stat-label">Prompts Generated</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num">7</div>
+      <div class="stat-label">AI Models Supported</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Creator Satisfaction</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num">3.2s</div>
+      <div class="stat-label">Average Analysis Time</div>
+    </div>
+  </div>
+</section>
+
+<div class="tri-divider"></div>
+
+<!-- DEMO -->
+<section id="demo">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <p class="section-eyebrow reveal">Live Analysis Engine</p>
+    <h2 class="section-title reveal reveal-delay-1">Watch Intelligence<br>Unfold in Real Time</h2>
+    <p class="section-sub reveal reveal-delay-2" style="margin:0 auto">Upload a frame. Watch TRIANGLE dissect every layer of visual information — then output prompts no human would write.</p>
+  </div>
+
+  <div class="demo-layout reveal" style="margin-top:64px">
+    <div class="demo-left">
+      <div style="margin-bottom: 16px;">
+        <input type="text" id="user-intent-input" placeholder="What are we building? (e.g. Apple juice website)" style="width: 100%; padding: 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: var(--white); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='rgba(160,180,255,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+      </div>
+      <div class="demo-upload-zone" id="upload-zone">
+        <input type="file" id="file-input" style="display:none" accept="image/*" />
+        <div class="upload-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="36" height="36" rx="4" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <polyline points="24,32 24,20" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+            <polyline points="18,26 24,20 30,26" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polygon points="24,8 30,17 18,17" fill="rgba(160,180,255,0.3)" stroke="rgba(160,180,255,0.5)" stroke-width="1"/>
+          </svg>
+        </div>
+        <h3 id="upload-title">Drop your frame here</h3>
+        <p id="upload-desc">Images · Videos · Stills · Frames<br>Up to 4K resolution</p>
+      </div>
+      <div style="margin-top: 16px;">
+        <button id="send-button" style="width: 100%; padding: 16px; background: var(--accent); border: none; border-radius: 8px; color: var(--black); font-family: var(--font-mono); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: opacity 0.3s; opacity: 0.5; pointer-events: none;">Synthesize Prompts</button>
+      </div>
+      <div>
+        <div class="demo-progress-label">
+          <div class="progress-dot"></div>
+          Analyzing Sample Frame
+        </div>
+        <div style="margin-top:16px">
+          <div class="analysis-step">
+            <div class="step-icon">🏗️</div>
+            <div class="step-info">
+              <div class="step-name">Layout Engine Analysis</div>
+              <div class="step-detail" id="detail-scene">waiting...</div>
+            </div>
+            <div class="step-status"><div class="status-pending" id="status-scene"></div></div>
+          </div>
+          <div class="analysis-step">
+            <div class="step-icon">🧩</div>
+            <div class="step-info">
+              <div class="step-name">Component Architecture</div>
+              <div class="step-detail" id="detail-lighting">waiting...</div>
+            </div>
+            <div class="step-status"><div class="status-pending" id="status-lighting"></div></div>
+          </div>
+          <div class="analysis-step">
+            <div class="step-icon">📐</div>
+            <div class="step-info">
+              <div class="step-name">Design System Extraction</div>
+              <div class="step-detail" id="detail-color">waiting...</div>
+            </div>
+            <div class="step-status"><div class="status-pending" id="status-color"></div></div>
+          </div>
+          <div class="analysis-step">
+            <div class="step-icon">🎨</div>
+            <div class="step-info">
+              <div class="step-name">Color Palette</div>
+              <div class="step-detail" id="detail-camera">waiting...</div>
+            </div>
+            <div class="step-status"><div class="status-pending" id="status-camera"></div></div>
+          </div>
+          <div class="analysis-step">
+            <div class="step-icon">✦</div>
+            <div class="step-info">
+              <div class="step-name">Prompt Engineering</div>
+              <div class="step-detail" id="detail-prompt">waiting...</div>
+            </div>
+            <div class="step-status"><div class="status-pending" id="status-prompt"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-right">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <h3 style="font-size:14px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--silver)">Generated Prompts</h3>
+        <span style="font-size:11px;color:var(--accent);font-family:var(--font-mono)">3 / 7 models</span>
+      </div>
+      <div class="prompt-tabs">
+        <div class="prompt-tab active">Master</div>
+        <div class="prompt-tab">Claude</div>
+        <div class="prompt-tab">Gemini</div>
+        <div class="prompt-tab">Cursor</div>
+      </div>
+      <div class="demo-prompt-output">
+        <div class="prompt-header">
+          <span class="prompt-label" id="current-prompt-label">Master Prompt</span>
+          <span class="prompt-copy">Copy</span>
+        </div>
+        <div class="prompt-text" id="typed-prompt">
+          <span id="typed-text"></span><span id="cursor-blink" style="animation:pulse 1s step-end infinite">|</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+        <div style="background:var(--black);border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:14px">
+          <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--silver);margin-bottom:8px">Layout</div>
+          <div style="font-size:13px;color:var(--white);font-weight:500" id="output-lighting">Awaiting Analysis</div>
+        </div>
+        <div style="background:var(--black);border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:14px">
+          <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--silver);margin-bottom:8px">Components</div>
+          <div style="font-size:13px;color:var(--white);font-weight:500" id="output-color">Awaiting Analysis</div>
+        </div>
+        <div style="background:var(--black);border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:14px">
+          <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--silver);margin-bottom:8px">Typography</div>
+          <div style="font-size:13px;color:var(--white);font-weight:500" id="output-camera">Awaiting Analysis</div>
+        </div>
+        <div style="background:var(--black);border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:14px">
+          <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--silver);margin-bottom:8px">Palette</div>
+          <div style="font-size:13px;color:var(--white);font-weight:500" id="output-style">Awaiting Analysis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="features-header reveal">
+    <div>
+      <p class="section-eyebrow">What TRIANGLE Does</p>
+      <h2 class="section-title">Creative<br>Reverse<br>Engineering</h2>
+    </div>
+    <div>
+      <p class="section-sub">TRIANGLE doesn't just analyze visuals. It reconstructs the entire creative DNA — lighting, motion, style, mood, camera direction — and converts it into production-grade prompts.</p>
+    </div>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="22,4 40,38 4,38" stroke="rgba(160,180,255,0.6)" stroke-width="1.2" fill="rgba(160,180,255,0.05)"/>
+          <polygon points="22,14 32,32 12,32" fill="rgba(160,180,255,0.15)" stroke="rgba(160,180,255,0.4)" stroke-width="0.8"/>
+        </svg>
+      </div>
+      <h3>Video Frame Intelligence</h3>
+      <p>Extract cinematic intelligence from any video — frame by frame. TRIANGLE reads motion blur, depth of field, camera movement, and lighting transitions as deep creative data.</p>
+      <span class="feature-tag">Video · Motion · Frames</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">
+        <svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="16" stroke="rgba(160,180,255,0.4)" stroke-width="1" stroke-dasharray="3 3"/><circle cx="22" cy="22" r="8" fill="rgba(160,180,255,0.1)" stroke="rgba(160,180,255,0.5)" stroke-width="1"/><line x1="22" y1="6" x2="22" y2="12" stroke="rgba(160,180,255,0.5)" stroke-width="1.2"/><line x1="38" y1="22" x2="32" y2="22" stroke="rgba(160,180,255,0.5)" stroke-width="1.2"/></svg>
+      </div>
+      <h3>Multi-Model Prompt Export</h3>
+      <p>One analysis. Seven prompt formats. Midjourney, Sora, Runway, Flux, Kling, Veo, and more — each optimized for their unique architectures and creative vocabularies.</p>
+      <span class="feature-tag">7 Models · Auto-Optimized</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">
+        <svg viewBox="0 0 44 44" fill="none"><rect x="8" y="8" width="28" height="28" rx="3" stroke="rgba(160,180,255,0.4)" stroke-width="1"/><rect x="14" y="14" width="16" height="16" rx="2" fill="rgba(160,180,255,0.1)" stroke="rgba(160,180,255,0.5)" stroke-width="0.8"/><line x1="22" y1="8" x2="22" y2="14" stroke="rgba(160,180,255,0.6)" stroke-width="1.5"/></svg>
+      </div>
+      <h3>Style DNA Extraction</h3>
+      <p>TRIANGLE identifies and isolates the aesthetic signature of any image — color philosophy, texture language, compositional grammar — then recreates it with surgical precision.</p>
+      <span class="feature-tag">Aesthetic · Style · Clone</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">
+        <svg viewBox="0 0 44 44" fill="none"><path d="M8 36 L22 8 L36 36" stroke="rgba(160,180,255,0.5)" stroke-width="1.2" fill="none"/><path d="M14 26 L22 16 L30 26" fill="rgba(160,180,255,0.08)" stroke="rgba(160,180,255,0.3)" stroke-width="0.8"/></svg>
+      </div>
+      <h3>Cinematic Lighting Analysis</h3>
+      <p>Identify Rembrandt, split, butterfly, rim, volumetric, and natural light signatures. Map the complete lighting setup of any scene and reproduce it in new generations.</p>
+      <span class="feature-tag">Lighting · Cinema · Setup</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">
+        <svg viewBox="0 0 44 44" fill="none"><rect x="6" y="16" width="32" height="20" rx="2" stroke="rgba(160,180,255,0.4)" stroke-width="1"/><circle cx="10" cy="26" r="3" fill="rgba(160,180,255,0.2)"/><circle cx="22" cy="26" r="5" fill="rgba(160,180,255,0.3)"/><line x1="18" y1="10" x2="26" y2="10" stroke="rgba(160,180,255,0.5)" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Character Consistency</h3>
+      <p>Lock any character's visual identity across an entire project. TRIANGLE maintains stylistic coherence in every generated prompt — costume, lighting, posture, mood.</p>
+      <span class="feature-tag">Consistency · Identity · Lock</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-icon">
+        <svg viewBox="0 0 44 44" fill="none"><polygon points="22,6 38,34 6,34" fill="none" stroke="rgba(160,180,255,0.3)" stroke-width="1"/><line x1="22" y1="6" x2="22" y2="20" stroke="rgba(160,180,255,0.8)" stroke-width="1.5"/><circle cx="22" cy="24" r="4" fill="rgba(160,180,255,0.25)" stroke="rgba(160,180,255,0.6)" stroke-width="1"/></svg>
+      </div>
+      <h3>Scene Reconstruction AI</h3>
+      <p>TRIANGLE rebuilds the full creative intent behind any scene — director's eye, production design, color grade, atmosphere. Turn any reference into a complete creative brief.</p>
+      <span class="feature-tag">Scene · Direction · Brief</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="comparison">
+  <div class="comparison-inner">
+    <div class="comparison-header reveal">
+      <p class="section-eyebrow">The Difference Is Everything</p>
+      <h2 class="section-title">TRIANGLE vs<br>Normal Prompting</h2>
+    </div>
+    <div class="comparison-grid reveal">
+      <div class="comp-side">
+        <div class="comp-label generic">Without TRIANGLE</div>
+        <div class="comp-item generic-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><line x1="5" y1="5" x2="11" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="5" x2="5" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/></svg>
+          Generic text descriptions
+        </div>
+        <div class="comp-item generic-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><line x1="5" y1="5" x2="11" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="5" x2="5" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/></svg>
+          Missing lighting nuance
+        </div>
+        <div class="comp-item generic-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><line x1="5" y1="5" x2="11" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="5" x2="5" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/></svg>
+          No camera intelligence
+        </div>
+        <div class="comp-item generic-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><line x1="5" y1="5" x2="11" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="5" x2="5" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/></svg>
+          One prompt format
+        </div>
+        <div class="comp-item generic-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><line x1="5" y1="5" x2="11" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="5" x2="5" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/></svg>
+          Style inconsistency
+        </div>
+        <div class="comp-item generic-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><line x1="5" y1="5" x2="11" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="5" x2="5" y2="11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/></svg>
+          Manual trial and error
+        </div>
+      </div>
+      <div class="comp-divider"></div>
+      <div class="comp-side">
+        <div class="comp-label triangle">With TRIANGLE</div>
+        <div class="comp-item triangle-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,14 2,14" stroke="rgba(160,180,255,0.6)" stroke-width="1" fill="rgba(160,180,255,0.1)"/></svg>
+          Cinematic-grade visual intelligence
+        </div>
+        <div class="comp-item triangle-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,14 2,14" stroke="rgba(160,180,255,0.6)" stroke-width="1" fill="rgba(160,180,255,0.1)"/></svg>
+          Full lighting setup mapped + named
+        </div>
+        <div class="comp-item triangle-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,14 2,14" stroke="rgba(160,180,255,0.6)" stroke-width="1" fill="rgba(160,180,255,0.1)"/></svg>
+          Lens, focal length, depth, motion detected
+        </div>
+        <div class="comp-item triangle-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,14 2,14" stroke="rgba(160,180,255,0.6)" stroke-width="1" fill="rgba(160,180,255,0.1)"/></svg>
+          7 model-optimized prompt outputs
+        </div>
+        <div class="comp-item triangle-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,14 2,14" stroke="rgba(160,180,255,0.6)" stroke-width="1" fill="rgba(160,180,255,0.1)"/></svg>
+          Locked style DNA across all outputs
+        </div>
+        <div class="comp-item triangle-item">
+          <svg class="comp-icon" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,14 2,14" stroke="rgba(160,180,255,0.6)" stroke-width="1" fill="rgba(160,180,255,0.1)"/></svg>
+          First-output quality. Every time.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section id="proof">
+  <div class="proof-header reveal">
+    <p class="section-eyebrow">Creators Trust TRIANGLE</p>
+    <h2 class="section-title">Built for the<br>Elite Creative</h2>
+  </div>
+  <div class="testimonials">
+    <div class="testimonial reveal">
+      <p class="testimonial-text">"TRIANGLE changed how I think about AI filmmaking. I upload a Kubrick still and it gives me a complete production brief. Nothing else does this."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MK</div>
+        <div>
+          <div class="author-name">Marcus Kim</div>
+          <div class="author-role">Creative Director — Volta Films</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial reveal reveal-delay-1">
+      <p class="testimonial-text">"The Sora prompts TRIANGLE generates are insane. I'm getting results that would take me 50 iterations to produce manually. It's not a tool. It's a co-director."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">SN</div>
+        <div>
+          <div class="author-name">Sophia Navarro</div>
+          <div class="author-role">AI Filmmaker · 2.1M Followers</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial reveal reveal-delay-2">
+      <p class="testimonial-text">"We use TRIANGLE for every campaign deck. The style DNA extraction alone is worth the price. Our clients think we have an army of prompt engineers."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">JA</div>
+        <div>
+          <div class="author-name">James Aldridge</div>
+          <div class="author-role">Founder — Axiom Creative Agency</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="proof-logos reveal">
+    <div class="proof-logo">NEON</div>
+    <div class="proof-logo">AXIOM</div>
+    <div class="proof-logo">VOLTA</div>
+    <div class="proof-logo">LUMO</div>
+    <div class="proof-logo">PRISM</div>
+    <div class="proof-logo">KORE</div>
+  </div>
+</section>
+
+<div class="tri-divider"></div>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-header reveal">
+    <p class="section-eyebrow">Pricing</p>
+    <h2 class="section-title">Invest in<br>Your Creative Edge</h2>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">$0</div>
+      <div class="price-period">Forever free · 20 analyses/mo</div>
+      <ul class="price-features">
+        <li>20 image analyses</li>
+        <li>3 prompt formats</li>
+        <li>Basic lighting analysis</li>
+        <li>Standard export</li>
+      </ul>
+      <a href="#" class="btn-plan">Get Started</a>
+    </div>
+    <div class="price-card reveal reveal-delay-1">
+      <div class="price-tier">Pro</div>
+      <div class="price-amount">$29</div>
+      <div class="price-period">Per month · Billed annually</div>
+      <ul class="price-features">
+        <li class="highlight">500 analyses/month</li>
+        <li class="highlight">All 7 AI models</li>
+        <li>Full lighting + camera</li>
+        <li>Style DNA extraction</li>
+        <li>Priority processing</li>
+      </ul>
+      <a href="#" class="btn-plan">Start Pro</a>
+    </div>
+    <div class="price-card featured reveal reveal-delay-2">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-tier">Studio</div>
+      <div class="price-amount">$79</div>
+      <div class="price-period">Per month · Billed annually</div>
+      <ul class="price-features">
+        <li class="highlight">Unlimited analyses</li>
+        <li class="highlight">Video frame extraction</li>
+        <li class="highlight">Character consistency</li>
+        <li class="highlight">Scene reconstruction</li>
+        <li>Team collaboration</li>
+        <li>API access</li>
+      </ul>
+      <a href="#" class="btn-plan featured-btn">Start Studio</a>
+    </div>
+    <div class="price-card reveal reveal-delay-3">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount">∞</div>
+      <div class="price-period">Custom · White-label</div>
+      <ul class="price-features">
+        <li class="highlight">Unlimited everything</li>
+        <li class="highlight">Private deployment</li>
+        <li class="highlight">Custom AI training</li>
+        <li class="highlight">Dedicated support</li>
+        <li>SLA guaranteed</li>
+      </ul>
+      <a href="#" class="btn-plan">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="cta-final">
+  <h2 class="cta-title reveal">
+    DON'T JUST<br>
+    <span>MAKE IMAGES.</span><br>
+    DIRECT THEM.
+  </h2>
+  <p class="cta-sub reveal reveal-delay-1">
+    The creators using TRIANGLE aren't ahead of the trend.<br>
+    They're setting it. Join them now.
+  </p>
+  <div class="reveal reveal-delay-2" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
+    <a href="#" class="btn-primary" style="font-size:15px;padding:18px 44px">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="8,1 15,14 1,14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      Start Analyzing Free
+    </a>
+    <a href="#" class="btn-secondary" style="font-size:15px;padding:18px 44px">Watch Demo →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <polygon points="8,2 14,13 2,13" stroke="currentColor" stroke-width="1" fill="none"/>
+      <polygon points="8,6 11,11 5,11" fill="currentColor" opacity="0.4"/>
+    </svg>
+    TRIANGLE
+  </div>
+  <div class="footer-links">
+    <a href="#">Product</a>
+    <a href="#">Docs</a>
+    <a href="#">Blog</a>
+    <a href="#">Privacy</a>
+  </div>
+  <div class="footer-copy">© 2025 TRIANGLE. All rights reserved.</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
