@@ -4,6 +4,7 @@ const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
@@ -12,7 +13,7 @@ const port = process.env.PORT || 3000;
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, os.tmpdir());
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -121,3 +122,5 @@ Apply the extracted design system and layout to generate perfect gaslighting pro
 app.listen(port, () => {
   console.log(`TRIANGLE AI Backend running at http://localhost:${port}`);
 });
+
+module.exports = app;
