@@ -10,16 +10,8 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, os.tmpdir());
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-const upload = multer({ storage: storage });
+// Configure multer for memory storage (required for Vercel Serverless)
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -55,15 +47,7 @@ You MUST return ONLY valid JSON matching this exact structure, with no markdown 
   "NEGATIVE_PROMPT": "What the AI must absolutely avoid doing (e.g., No generic styling, no inline CSS)."
 }`;
 
-// Helper to convert local file to Generative Part object
-function fileToGenerativePart(filePath, mimeType) {
-  return {
-    inlineData: {
-      data: Buffer.from(fs.readFileSync(filePath)).toString("base64"),
-      mimeType
-    },
-  };
-}
+// Removed fileToGenerativePart as we now use memory buffers
 
 app.post('/analyze', upload.single('image'), async (req, res) => {
   try {
@@ -71,16 +55,19 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'No image provided' });
     }
 
-    const imagePath = req.file.path;
     const mimeType = req.file.mimetype;
     
     // Validate mimetype
     if (!mimeType.startsWith('image/') && !mimeType.startsWith('video/')) {
-       fs.unlinkSync(imagePath);
        return res.status(400).json({ error: 'Only images are supported for now' });
     }
 
-    const imagePart = fileToGenerativePart(imagePath, mimeType);
+    const imagePart = {
+      inlineData: {
+        data: req.file.buffer.toString("base64"),
+        mimeType
+      }
+    };
 
     // Use Gemini 2.5 Flash as it's the recommended multimodal model
     const model = genAI.getGenerativeModel({ 
@@ -105,16 +92,9 @@ Apply the extracted design system and layout to generate perfect gaslighting pro
     const responseText = result.response.text();
     const jsonOutput = JSON.parse(responseText);
 
-    // Clean up uploaded file
-    fs.unlinkSync(imagePath);
-
     res.json(jsonOutput);
   } catch (error) {
     console.error('Error during analysis:', error);
-    // Cleanup file if it exists and there's an error
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
-    }
     res.status(500).json({ error: 'Failed to analyze image' });
   }
 });
