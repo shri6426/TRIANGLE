@@ -139,14 +139,23 @@ fileInput.addEventListener('change', (e) => {
   }
 });
 
+document.getElementById('user-intent-input').addEventListener('input', (e) => {
+  if (e.target.value.trim().length > 0) {
+    sendButton.style.opacity = '1';
+    sendButton.style.pointerEvents = 'auto';
+    sendButton.textContent = 'Synthesize Prompts';
+  }
+});
+
 sendButton.addEventListener('click', async () => {
-  if (!selectedFile) return;
+  const userIntent = document.getElementById('user-intent-input').value;
+  if (!selectedFile && !userIntent) return;
 
   // Disable button during analysis
   sendButton.style.opacity = '0.5';
   sendButton.style.pointerEvents = 'none';
   sendButton.textContent = 'Synthesizing...';
-  document.getElementById('upload-title').textContent = "Uploading...";
+  document.getElementById('upload-title').textContent = selectedFile ? "Uploading..." : "Processing Intent...";
 
   const steps = ['scene', 'lighting', 'color', 'camera', 'prompt'];
   steps.forEach(step => {
@@ -157,11 +166,10 @@ sendButton.addEventListener('click', async () => {
   
   try {
     // Step 1: Uploading / Reconstructing
-    setStepState('scene', 'loading', 'Uploading image...');
+    setStepState('scene', 'loading', selectedFile ? 'Uploading image...' : 'Analyzing intent...');
     
     const formData = new FormData();
-    formData.append('image', selectedFile);
-    const userIntent = document.getElementById('user-intent-input').value;
+    if (selectedFile) formData.append('image', selectedFile);
     if (userIntent) {
       formData.append('userIntent', userIntent);
     }
@@ -171,7 +179,7 @@ sendButton.addEventListener('click', async () => {
       body: formData
     });
     
-    setStepState('scene', 'done', selectedFile.name);
+    setStepState('scene', 'done', selectedFile ? selectedFile.name : 'Intent Analyzed');
     
     if (!response.ok) throw new Error('Analysis failed');
     

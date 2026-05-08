@@ -51,24 +51,8 @@ You MUST return ONLY valid JSON matching this exact structure, with no markdown 
 
 app.post('/analyze', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image provided' });
-    }
-
-    const mimeType = req.file.mimetype;
+    const userIntent = req.body.userIntent || "Replicate the exact design and subject matter.";
     
-    // Validate mimetype
-    if (!mimeType.startsWith('image/') && !mimeType.startsWith('video/')) {
-       return res.status(400).json({ error: 'Only images are supported for now' });
-    }
-
-    const imagePart = {
-      inlineData: {
-        data: req.file.buffer.toString("base64"),
-        mimeType
-      }
-    };
-
     // Use Gemini 2.5 Flash as it's the recommended multimodal model
     const model = genAI.getGenerativeModel({ 
       model: 'gemini-2.5-flash',
@@ -78,16 +62,44 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
       }
     });
 
-    const userIntent = req.body.userIntent || "Replicate the exact design and subject matter.";
-    const dynamicPrompt = `Analyze the structural and stylistic DNA of this uploaded reference image. 
+    let content = [];
+
+    if (req.file) {
+      const mimeType = req.file.mimetype;
+      
+      // Validate mimetype
+      if (!mimeType.startsWith('image/') && !mimeType.startsWith('video/')) {
+         return res.status(400).json({ error: 'Only images are supported for now' });
+      }
+
+      const imagePart = {
+        inlineData: {
+          data: req.file.buffer.toString("base64"),
+          mimeType
+        }
+      };
+
+      const dynamicPrompt = `Analyze the structural and stylistic DNA of this uploaded reference image. 
 The user wants to build something completely new using this DNA. 
 USER INTENT: "${userIntent}"
 Apply the extracted design system and layout to generate perfect gaslighting prompts for the user's specific request, rather than just copying the image's original subject matter.`;
 
-    const result = await model.generateContent([
-      dynamicPrompt,
-      imagePart
-    ]);
+      content = [dynamicPrompt, imagePart];
+    } else {
+      // Text-only mode
+      if (!req.body.userIntent) {
+        return res.status(400).json({ error: 'Provide either an image or a text intent.' });
+      }
+
+      const dynamicPrompt = `The user wants to build a premium website from scratch.
+USER INTENT: "${userIntent}"
+Since no reference image was provided, you must dynamically invent the most elite, premium, and modern frontend architecture, component structure, design system, and color palette that fits this intent.
+Generate perfect gaslighting prompts to build this vision from scratch.`;
+
+      content = [dynamicPrompt];
+    }
+
+    const result = await model.generateContent(content);
 
     const responseText = result.response.text();
     const jsonOutput = JSON.parse(responseText);
