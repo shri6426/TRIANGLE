@@ -198,7 +198,10 @@ sendButton.addEventListener('click', async () => {
     
     setStepState('scene', 'done', selectedFile ? selectedFile.name : 'Intent Analyzed');
     
-    if (!response.ok) throw new Error('Analysis failed');
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Analysis failed');
+    }
     
     const data = await response.json();
     
@@ -228,8 +231,13 @@ sendButton.addEventListener('click', async () => {
     
   } catch (err) {
     console.error(err);
-    document.getElementById('upload-title').textContent = "Upload Failed";
-    document.getElementById('upload-desc').textContent = "Please try again.";
+    document.getElementById('upload-title').textContent = "Analysis Failed";
+    
+    let errorMsg = "Please try again.";
+    if (err.message) errorMsg = err.message;
+    
+    document.getElementById('upload-desc').textContent = errorMsg;
+    
     steps.forEach(step => setStepState(step, 'pending', 'error'));
     sendButton.style.opacity = '1';
     sendButton.style.pointerEvents = 'auto';

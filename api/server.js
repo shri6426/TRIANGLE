@@ -57,8 +57,16 @@ You MUST return ONLY valid JSON matching this exact structure, with no markdown 
 
 // Removed fileToGenerativePart as we now use memory buffers
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', api_key_present: !!process.env.GEMINI_API_KEY });
+});
+
 app.post('/analyze', upload.single('image'), async (req, res) => {
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY is not configured on the server.' });
+    }
+
     const userIntent = req.body.userIntent || "Replicate the exact design and subject matter.";
     
     // Use Gemini 1.5 Flash for high speed and reliability
@@ -108,14 +116,27 @@ Generate perfect gaslighting prompts to build this vision from scratch.`;
     }
 
     const result = await model.generateContent(content);
-
-    const responseText = result.response.text();
-    const jsonOutput = JSON.parse(responseText);
-
-    res.json(jsonOutput);
+    let responseText = result.response.text();
+    
+    // Robust JSON parsing
+    try {
+      // Remove any potential markdown wrapping if the model ignored the system prompt
+      const cleanedJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+      const jsonOutput = JSON.parse(cleanedJson);
+      res.json(jsonOutput);
+    } catch (parseError) {
+      console.error('JSON Parse Error. Raw response:', responseText);
+      res.status(500).json({ 
+        error: 'AI returned invalid data format',
+        raw: responseText.substring(0, 100) + '...'
+      });
+    }
   } catch (error) {
     console.error('Error during analysis:', error);
-    res.status(500).json({ error: 'Failed to analyze image' });
+    res.status(500).json({ 
+      error: 'Failed to analyze request',
+      details: error.message
+    });
   }
 });
 
