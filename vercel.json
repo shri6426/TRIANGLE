@@ -9,10 +9,6 @@
     {
       "source": "/analyze",
       "destination": "/api/server.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/public/$1"
     }
   ]
 }
