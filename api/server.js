@@ -18,7 +18,11 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '../public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 // The Web Dev UI/UX system prompt
 const systemInstruction = `You are the world's most elite Staff Frontend Engineer, UI/UX Architect, and master AI prompt engineer.

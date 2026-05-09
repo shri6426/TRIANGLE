@@ -7,7 +7,7 @@
   },
   "rewrites": [
     {
-      "source": "/analyze",
+      "source": "/(.*)",
       "destination": "/api/server.js"
     }
   ]
